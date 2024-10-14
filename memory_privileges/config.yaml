@@ -8,6 +8,7 @@ Resources:
         #!/bin/bash
         echo "memory_limit=2048M" >> /etc/environment  # Memory limit issue
         echo "user=root" >> /etc/environment  # Privileged execution
+        echo "ulimit -n 65535" >> /etc/environment  # High file descriptor limit
 
   MyS3Bucket:
     Type: AWS::S3::Bucket
@@ -19,7 +20,10 @@ Resources:
           Value: Production
 
 # Vulnerable YAML file with memory limit issue
-memory_limit: 2048M
+memory_limit: 2048M  # Hardcoded memory limit
 
 # Privileged execution
-user: root
+user: root  # Hardcoded privileged user
+
+# High file descriptor limit
+ulimit: 65535  # Hardcoded high file descriptor limit
