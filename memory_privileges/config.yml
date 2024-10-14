@@ -1,5 +1,29 @@
-# Vulnerable YML file with memory limit issue
-memory_limit: 2048M
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: mykeypair
+      UserData: |
+        #!/bin/bash
+        echo "memory_limit=1024M" >> /etc/environment  # Reduced memory limit issue
+        echo "user=admin" >> /etc/environment  # Still a privileged execution
+        echo "ulimit -n 65535" >> /etc/environment  # High file descriptor limit
+
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: mybucket
+      AccessControl: Private
+      Tags:
+        - Key: Environment
+          Value: Production
+
+# Vulnerable YAML file with memory limit issue
+memory_limit: 1024M  # Reduced hardcoded memory limit
 
 # Privileged execution
-user: root
+user: admin  # Still a hardcoded privileged user
+
+# High file descriptor limit
+ulimit: 65535  # Hardcoded high file descriptor limit
