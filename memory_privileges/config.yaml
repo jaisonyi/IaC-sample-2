@@ -1,3 +1,23 @@
+Resources:
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: mykeypair
+      UserData: |
+        #!/bin/bash
+        echo "memory_limit=2048M" >> /etc/environment  # Memory limit issue
+        echo "user=root" >> /etc/environment  # Privileged execution
+
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: mybucket
+      AccessControl: Private
+      Tags:
+        - Key: Environment
+          Value: Production
+
 # Vulnerable YAML file with memory limit issue
 memory_limit: 2048M
 
