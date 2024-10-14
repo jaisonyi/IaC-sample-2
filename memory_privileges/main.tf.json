@@ -1,16 +1,27 @@
-{
-  "resource": {
-    "aws_instance": {
-      "example": {
-        "instance_type": "t2.micro",
-        "user_data": "#!/bin/bash\nexport JAVA_OPTS=\"-Xmx2048m\"\n"
-      }
-    },
-    "aws_iam_role": {
-      "example": {
-        "name": "example-role",
-        "assume_role_policy": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"Service\": \"ec2.amazonaws.com\"\n      },\n      \"Action\": \"sts:AssumeRole\"\n    }\n  ]\n}\n"
-      }
+# Vulnerable Terraform file with memory limit issue
+resource "aws_instance" "example" {
+  instance_type = "t2.micro"
+  user_data = <<-EOF
+    #!/bin/bash
+    export JAVA_OPTS="-Xmx2048m"
+  EOF
+}
+
+# Privileged execution
+resource "aws_iam_role" "example" {
+  name = "example-role"
+  assume_role_policy = <<-EOF
+    {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ec2.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole"
+        }
+      ]
     }
-  }
+  EOF
 }
