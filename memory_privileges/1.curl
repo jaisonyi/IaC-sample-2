@@ -1,0 +1,5 @@
+# Vulnerable curl command with memory limit issue
+curl -X POST -d "data=@largefile" http://example.com --max-filesize 2048
+
+# Privileged execution
+curl -u root:password http://example.com
