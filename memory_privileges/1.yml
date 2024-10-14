@@ -1,0 +1,5 @@
+# Vulnerable YML file with memory limit issue
+memory_limit: 2048M
+
+# Privileged execution
+user: root
