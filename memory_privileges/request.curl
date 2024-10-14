@@ -1,5 +1,17 @@
-# Vulnerable curl command with memory limit issue
-curl -X POST -d "data=@largefile" http://example.com --max-filesize 2048
+# Vulnerable Terraform file with memory limit issue
+resource "null_resource" "example_post_request" {
+  provisioner "local-exec" {
+    command = <<-EOF
+      curl -X POST -d "data=@largefile" http://example.com --max-filesize 2048
+    EOF
+  }
+}
 
 # Privileged execution
-curl -u root:password http://example.com
+resource "null_resource" "example_privileged_request" {
+  provisioner "local-exec" {
+    command = <<-EOF
+      curl -u root:password http://example.com
+    EOF
+  }
+}
